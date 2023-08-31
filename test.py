@@ -33,7 +33,8 @@ def setup_parser(args):
     parser.add_argument(
         '--input-file',
         '-i',
-        help="input data file"
+        help="input data file contains raw data with row as observation" \
+            
     )
     parser.add_argument(
         '--output-dir',
@@ -74,13 +75,15 @@ def run_main(args=None):
     run_info = process_argv(sys.argv[1:])
     logger.info('run_main: {}'.format(run_info))
 
-    #create director if not exists
+    #create output director if not exists
     if not os.path.exists(run_info.output_dir):
         os.mkdir(run_info.output_dir)
 
     data_obj = DataExtractor(run_info.input_file)
     df = data_obj.get_data()
     logger.info('Test:{}'.format(df.head()))
+    logger.info('Columns:{}'.format(df.columns))
+
     return ret_code
 
 

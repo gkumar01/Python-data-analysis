@@ -11,6 +11,6 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 class DataPreprocess:
-
+    
     def __init__(self) -> None:
         pass
