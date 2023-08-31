@@ -1,4 +1,4 @@
-#!/usr/bin/python 3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import logging
@@ -57,7 +57,7 @@ class DataExtractor:
     
     def __switch(self):
         df = None
-        
+
         if self.filename.endswith('.csv'):
             df = self.__csv_file()
         elif self.filename.endswith('.tsv'):
