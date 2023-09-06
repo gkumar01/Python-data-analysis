@@ -126,7 +126,7 @@ class ParameterExtractor(DataExtractor):
 class CreateOutput_label:
     """Wraper class to extract lable from data filename """
     def __init__(self) -> None:
-        return    
+        return
     
     @staticmethod
     def get_lable(filename):

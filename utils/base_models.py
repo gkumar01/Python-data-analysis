@@ -11,7 +11,7 @@ __version__ = '1.0.0'
 
 logger = logging.getLogger('__name__')
 logger.setLevel(logging.INFO)
-logger.addHandler(logging.StreamHandler(sys.stdout))
+# logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 class Models:

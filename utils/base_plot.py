@@ -34,5 +34,4 @@ class BasePlot:
         plt.savefig(outfile, dpi=300, bbox_inches='tight')
         return
     
-    # @staticmethod
-    # def 
+    
