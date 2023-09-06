@@ -41,12 +41,14 @@ class DataPreprocess:
         """ Wrapper function to provide summary stat
         Median/Mode added for checking skweness.
         Mean ~ Median ~ Mode (Normal distribution)
-        Mode > Median > Mean (left-skewed data)
-        Mean > Median > Mode (right-skewed data) 
+        Mode > Median > Mean (left-skewed/negative-skewness data):
+            use Square, Cube
+        Mean > Median > Mode (right-skewed/positive-skewness data): 
+            use Square-root, Cube-root or Log transforms. 
         Args: dataframe
         return: dataframe
         raises: None.
-         
+        Note: https://www.kaggle.com/discussions/getting-started/110134 
         """
         try:
             des = tbl.describe()
