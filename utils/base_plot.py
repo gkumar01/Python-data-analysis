@@ -13,7 +13,7 @@ logger.setLevel(logging.INFO)
 # logger.addHandler(logging.StreamHandler(sys.stdout))
 
 class BasePlot:
-    """Wraper class for basic plotting """
+    """Wrapper class for basic plotting """
     def __init__(self, tbl,outfile) -> None:
         self.tbl = tbl
         self.outfile = outfile
@@ -21,7 +21,7 @@ class BasePlot:
 
     @staticmethod
     def corrplot(tbl,outfile):
-        """Pairwise correlation plot for predictor variable """
+        """ Pairwise correlation plot for predictor variable """
         heatmap = sns.heatmap(tbl.corr(), 
                               vmin=-1, 
                               vmax=1, 
@@ -33,3 +33,6 @@ class BasePlot:
                           )
         plt.savefig(outfile, dpi=300, bbox_inches='tight')
         return
+    
+    # @staticmethod
+    # def 

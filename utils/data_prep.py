@@ -15,7 +15,7 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 class DataExtractor:
-    """ Wraper for tsv/csv/xls/json file data
+    """ Wrapper for tsv/csv/xls/json file data
     DataExtractor class provides a wraper for pandas dataframe
     """
     def __init__(self,filename:str) -> None:

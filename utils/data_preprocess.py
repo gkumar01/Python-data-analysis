@@ -20,13 +20,22 @@ class DataPreprocess:
 
     @classmethod    
     def get_tbl_description(cls, tbl):
+        """ Wrapper function to provide summary stat
+        Args: dataframe
+        return: dataframe
+        raises: None. 
+        """
         try:
             des = tbl.describe()
+            #add cv
+            des.loc['cv'] = des.loc['std'] / des.loc['mean']
+            
         except Exception as e:
             exec_type, _, _ = sys.exc_info()
             msg = '{}: {}'.format(exec_type.__name__, str(e))
             logger.exception(msg)
             logger.info('Please call get_tbl_describtion using panda dataframe')
             sys.exit(1)
+            
         return des
     
