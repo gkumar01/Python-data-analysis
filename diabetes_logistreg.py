@@ -109,6 +109,7 @@ def run_main(args=None):
     logger.info('{}'.format(data_desc))
 
     output_lable = CreateOutput_label.get_lable(run_info.input_file)
+    
     output_file = run_info.output_dir.rstrip('/') \
         +  '/' + output_lable \
         + '_summary_stat.csv'
@@ -133,11 +134,11 @@ def run_main(args=None):
 if __name__ == '__main__':
     """
     usage:
-    python3 test.py \
+    python3 diabetes_logistreg.py \
         --input-file ./input_data/diabetes.csv  \
         --param-file ./input_data/diabetes_parameter.json \
         --output-dir ./output_data/ \
-        --model-type 'linearregression' \
+        --model-type 'logisticRegression' \
     """
     
     try:
