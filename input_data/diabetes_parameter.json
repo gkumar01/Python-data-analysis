@@ -1,0 +1,14 @@
+
+{
+    "DEPENDENT_VARIABLE" : "Outcome",
+    "PREDICTOR_VARIABLE" : [
+        "Pregnancies", 
+        "Glucose", 
+        "BloodPressure",
+        "SkinThickness", 
+        "Insulin",
+        "BMI", 
+        "DiabetesPedigreeFunction", 
+        "Age" 
+        ]
+}

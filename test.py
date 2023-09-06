@@ -10,7 +10,9 @@ import numpy as np
 import pandas as pd
 from collections import  namedtuple
 
-from utils.data_prep import DataExtractor
+from utils.data_prep import DataExtractor, ParameterExtractor, CreateOutput_label
+from utils.data_preprocess import DataPreprocess
+from utils.base_plot import BasePlot
 
 __version__ = '1.0.0'
 
@@ -36,6 +38,13 @@ def setup_parser(args):
         help="input data file contains raw data with row as observation" \
             
     )
+    parser.add_argument(
+        '--param-file',
+        '-p',
+        help="input data file contains raw data with row as observation" \
+            
+    )
+    
     parser.add_argument(
         '--output-dir',
         '-d',
@@ -79,10 +88,44 @@ def run_main(args=None):
     if not os.path.exists(run_info.output_dir):
         os.mkdir(run_info.output_dir)
 
+    path, file_label = os.path.split(run_info.input_file)
+    logger.info(path)
+
     data_obj = DataExtractor(run_info.input_file)
     df = data_obj.get_data()
     logger.info('Test:{}'.format(df.head()))
     logger.info('Columns:{}'.format(df.columns))
+
+    param = ParameterExtractor(run_info.param_file).get_parameter()
+    logger.info('Param: {}'.format(param))
+    # predictor_var = param['PREDICTOR_VARIABLE']
+    # logger.info('predictor:{}'.format( predictor_var))
+    # outcome_var = param['DEPENDENT_VARIABLE']
+    # logger.info('predictor:{}'.format( df[param['PREDICTOR_VARIABLE']]))
+
+    data_desc = DataPreprocess.get_tbl_description(
+        df[param['PREDICTOR_VARIABLE']]
+    )
+    logger.info('{}'.format(data_desc))
+
+    output_lable = CreateOutput_label.get_lable(run_info.input_file)
+    output_file = run_info.output_dir.rstrip('/') \
+        +  '/' + output_lable \
+        + '_summary_stat.csv'
+    
+    logger.info('{}'.format(output_file))
+    
+    #write summary stat
+    data_desc.to_csv(output_file)
+    
+    #create corr plot
+    corr_plt_png = run_info.output_dir.rstrip('/') \
+        +  '/' + output_lable \
+        + '_correlation_plot.png'
+    
+    BasePlot.corrplot(df[param['PREDICTOR_VARIABLE']],
+                      corr_plt_png
+                      )
 
     return ret_code
 
@@ -92,9 +135,9 @@ if __name__ == '__main__':
     usage:
     python3 test.py \
         --input-file ./input_data/diabetes.csv  \
+        --param-file ./input_data/diabetes_parameter.json \
         --output-dir ./output_data/ \
         --model-type 'linearregression' \
-        
     """
     
     try:
