@@ -148,7 +148,9 @@ def run_main(args=None):
     mod_interpretation.to_csv(mod_interpretation_fl)
 
     cm_df = mod.confusion_matrix()
-    logger.info('run_main:{}'.format(cm_df))
+    metric = mod.get_metric()
+    logger.info('confusion_metrix:{}'.format(cm_df))
+    logger.info('metric:{}'.format(metric))
     
     # write confusion matrix
     confusion_matrix_fl = run_info.output_dir.rstrip('/') \

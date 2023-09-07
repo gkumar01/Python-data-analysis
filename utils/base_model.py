@@ -36,6 +36,13 @@ class BaseModelLogit:
         #add intercept
         self.X = sm.add_constant(self.X)
         # logger.info('tt:{}'.format(self.X))
+        self.metric = {
+            'Accuracy' : None,
+            'Precision' : None,
+            'Specificity' : None,
+            'Recall' : None,
+            'F1_score' : None
+        }
         
 
     def __minmaxscale_tranformation(self,lst):
@@ -75,18 +82,34 @@ class BaseModelLogit:
         data_summary.sort_values(by=['Odds'], ascending=False).reset_index(drop=True)
 
         logger.info('xxx{}'.format(data_summary))
-        
-        return (self.summary_results,data_summary) 
+        return (self.summary_results,data_summary)
     
     
     def confusion_matrix(self):
         """ Wrapper instance function for classification summary """
-        self.cm_df = pd.DataFrame(self.model_fit.pred_table(threshold=0.5).astype(int))
+        mat = self.model_fit.pred_table(threshold=0.5).astype(int)
+        # logger.info('{} : {} : {}'.format(
+        #     mat[1][1], mat[ :,1].sum(), mat[1:,].sum())
+        #                             )
+        self.cm_df = pd.DataFrame(mat)
         self.cm_df.columns = ['Predicted 0', 'Predicted 1']
         self.cm_df = self.cm_df.rename(index ={0: 'Actual 0', 1: 'Actual 1'})
         # logger.info('{}'.format(self.cm_df))
+        self.metric['Accuracy'] = round(100 * np.trace(mat)/mat.sum(), 2)
+        self.metric['Precision'] = round(100 * mat[1][1]/mat[:,1].sum(), 2)
+        self.metric['Specificity'] = round(100 * mat[0][0]/mat[0:,].sum(), 2)
+        self.metric['Recall'] = round(100 * mat[1][1]/mat[1:,].sum(), 2)
+        self.metric['F1_score'] = \
+            round(2*(self.metric['Precision']*self.metric['Recall'])/ \
+                  (self.metric['Precision'] + self.metric['Recall']) \
+                  ,4)
+        
+        # logger.info('Metric:{}'.format(self.metric))
 
         return self.cm_df
+    
+    def get_metric(self):
+        return self.metric
 
 
 if __name__ == '__main__':
