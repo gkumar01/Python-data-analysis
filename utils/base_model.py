@@ -37,7 +37,7 @@ class BaseModelLogit:
         
 
     def __minmaxscale_tranformation(self,lst):
-        """ Scale between 0 - 1 
+        """ scale variable between 0 to 1. 
         Note: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html
         """
         # scaler = MinMaxScaler()
@@ -52,7 +52,7 @@ class BaseModelLogit:
     
     
     def logit_summary(self):
-        """ """
+        """ Wrapper instance function for logit model fit """
         self.model_fit = sm.Logit(self.Y, self.X).fit()
         res = self.model_fit.summary()
         #covert to dataframe
@@ -61,7 +61,7 @@ class BaseModelLogit:
     
     
     def confusion_matrix(self):
-        """ """
+        """ Wrapper instance function for classification summary """
         self.cm_df = pd.DataFrame(self.model_fit.pred_table(threshold=0.5))
         self.cm_df.columns = ['Predicted 0', 'Predicted 1']
         self.cm_df = self.cm_df.rename(index ={0: 'Actual 0', 1: 'Actual 1'})
