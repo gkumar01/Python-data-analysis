@@ -81,7 +81,7 @@ class BaseModelLogit:
     
     def confusion_matrix(self):
         """ Wrapper instance function for classification summary """
-        self.cm_df = pd.DataFrame(self.model_fit.pred_table(threshold=0.5))
+        self.cm_df = pd.DataFrame(self.model_fit.pred_table(threshold=0.5).astype(int))
         self.cm_df.columns = ['Predicted 0', 'Predicted 1']
         self.cm_df = self.cm_df.rename(index ={0: 'Actual 0', 1: 'Actual 1'})
         # logger.info('{}'.format(self.cm_df))

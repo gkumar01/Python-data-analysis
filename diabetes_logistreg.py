@@ -150,7 +150,7 @@ def run_main(args=None):
     cm_df = mod.confusion_matrix()
     logger.info('run_main:{}'.format(cm_df))
     
-    #write confusion matrix
+    # write confusion matrix
     confusion_matrix_fl = run_info.output_dir.rstrip('/') \
         +  '/' + output_lable \
         +  '_' + run_info.model_type + '_confusion_matrix.png'

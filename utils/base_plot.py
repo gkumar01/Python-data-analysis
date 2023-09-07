@@ -14,9 +14,9 @@ logger.setLevel(logging.INFO)
 
 class BasePlot:
     """Wrapper class for basic plotting """
-    def __init__(self, tbl,cm,outfile) -> None:
+    def __init__(self, tbl,outfile) -> None:
         self.tbl = tbl
-        self.cm = cm
+        # self.cm = cm
         self.outfile = outfile
         
     # calling the destructor
@@ -41,11 +41,11 @@ class BasePlot:
         return
     
     @classmethod
-    def accuracy_plot(cls,cm,outfile):
+    def accuracy_plot(cls,tbl,outfile):
         """ """
-        logger.info('{}'.format(cm))  
+        logger.info('{}'.format(tbl))  
         plt.figure()
-        heatmap = sns.heatmap(cm, annot=True,cmap='BrBG')
+        heatmap = sns.heatmap(tbl, annot=True,cmap='BrBG')
         heatmap.set_title('Accuracy Score: {}'.format('Not defined!!!'),
                           fontdict={'fontsize':18}, 
                           pad=12
