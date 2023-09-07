@@ -26,11 +26,14 @@ class BaseModelLogit:
     def __init__(self,X,Y) -> None:
         self.X = X
         self.Y = Y
-        logger.info('xx:{}'.format(self.X))
+        self.model_fit = None
+        self.summary_results = None
+        self.cm_df = None
+        # logger.info('xx:{}'.format(self.X))
         self.X = self.X.apply(self.__minmaxscale_tranformation,axis=0)
         #add intercept
         self.X = sm.add_constant(self.X)
-        logger.info('tt:{}'.format(self.X))
+        # logger.info('tt:{}'.format(self.X))
         
 
     def __minmaxscale_tranformation(self,lst):
@@ -50,12 +53,22 @@ class BaseModelLogit:
     
     def logit_summary(self):
         """ """
-        model_fit = sm.Logit(self.Y, self.X).fit()
-        res = model_fit.summary()
-        logger.info('{}'.format(res))
+        self.model_fit = sm.Logit(self.Y, self.X).fit()
+        res = self.model_fit.summary()
         #covert to dataframe
-        results_df = pd.DataFrame(res.tables[1].data)
-        return results_df
+        self.summary_results = pd.DataFrame(res.tables[1].data)
+        return self.summary_results 
+    
+    
+    def confusion_matrix(self):
+        """ """
+        self.cm_df = pd.DataFrame(self.model_fit.pred_table(threshold=0.5))
+        self.cm_df.columns = ['Predicted 0', 'Predicted 1']
+        self.cm_df = self.cm_df.rename(index ={0: 'Actual 0', 1: 'Actual 1'})
+        # logger.info('{}'.format(self.cm_df))
+
+        return self.cm_df
+
 
 if __name__ == '__main__':
    logger.info('base_model:{}'.format())

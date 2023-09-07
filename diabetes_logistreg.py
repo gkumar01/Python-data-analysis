@@ -136,12 +136,20 @@ def run_main(args=None):
     # logger.info('{}'.format(mod_summary))
 
     #write fit summary
-    fit_summary =  run_info.output_dir.rstrip('/') \
+    fit_summary_fl =  run_info.output_dir.rstrip('/') \
         +  '/' + output_lable \
-        + run_info.model_type + '_summay.csv'
+        +  '_' + run_info.model_type + '_summay.csv'
     
-    mod_summary.to_csv(fit_summary)
+    mod_summary.to_csv(fit_summary_fl)
+
+    cm_df = mod.confusion_matrix()
+    #logger.info('{}'.format(cm_df))
     
+    confusion_matrix_fl = run_info.output_dir.rstrip('/') \
+        +  '/' + output_lable \
+        +  '_' + run_info.model_type + '_confusion_matrix.csv'
+    
+    cm_df.to_csv(confusion_matrix_fl)
 
     return ret_code
 
