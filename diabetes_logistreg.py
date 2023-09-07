@@ -132,25 +132,31 @@ def run_main(args=None):
     mod = BaseModelLogit(X = df[param['PREDICTOR_VARIABLE']],
               Y = df[param['DEPENDENT_VARIABLE']]
               )
-    mod_summary = mod.logit_summary()
+    mod_summary, mod_interpretation = mod.logit_summary()
     # logger.info('{}'.format(mod_summary))
 
     #write fit summary
-    fit_summary_fl =  run_info.output_dir.rstrip('/') \
+    mod_summary_fl =  run_info.output_dir.rstrip('/') \
         +  '/' + output_lable \
         +  '_' + run_info.model_type + '_summay.csv'
     
-    mod_summary.to_csv(fit_summary_fl)
+    mod_summary.to_csv(mod_summary_fl)
+
+    mod_interpretation_fl = run_info.output_dir.rstrip('/') \
+        +  '/' + output_lable \
+        +  '_' + run_info.model_type + '_feature_summary.csv'
+    mod_interpretation.to_csv(mod_interpretation_fl)
 
     cm_df = mod.confusion_matrix()
-    #logger.info('{}'.format(cm_df))
+    logger.info('run_main:{}'.format(cm_df))
     
     #write confusion matrix
     confusion_matrix_fl = run_info.output_dir.rstrip('/') \
         +  '/' + output_lable \
-        +  '_' + run_info.model_type + '_confusion_matrix.csv'
+        +  '_' + run_info.model_type + '_confusion_matrix.png'
     
-    cm_df.to_csv(confusion_matrix_fl)
+    BasePlot.accuracy_plot(cm_df, confusion_matrix_fl)
+    # cm_df.to_csv(confusion_matrix_fl)
 
     return ret_code
 

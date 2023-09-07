@@ -14,14 +14,19 @@ logger.setLevel(logging.INFO)
 
 class BasePlot:
     """Wrapper class for basic plotting """
-    def __init__(self, tbl,outfile) -> None:
+    def __init__(self, tbl,cm,outfile) -> None:
         self.tbl = tbl
+        self.cm = cm
         self.outfile = outfile
         
+    # calling the destructor
+    def __del__(self):
+      return
 
-    @staticmethod
-    def corrplot(tbl,outfile):
+    @classmethod
+    def corrplot(cls,tbl,outfile):
         """ Pairwise correlation plot for predictor variable """
+        plt.figure()
         heatmap = sns.heatmap(tbl.corr(), 
                               vmin=-1, 
                               vmax=1, 
@@ -32,6 +37,20 @@ class BasePlot:
                           pad=12
                           )
         plt.savefig(outfile, dpi=300, bbox_inches='tight')
+        plt.clf()
         return
     
+    @classmethod
+    def accuracy_plot(cls,cm,outfile):
+        """ """
+        logger.info('{}'.format(cm))  
+        plt.figure()
+        heatmap = sns.heatmap(cm, annot=True,cmap='BrBG')
+        heatmap.set_title('Accuracy Score: {}'.format('Not defined!!!'),
+                          fontdict={'fontsize':18}, 
+                          pad=12
+                          )
+        plt.savefig(outfile, dpi=300, bbox_inches='tight')
+        plt.clf()
+        return
     

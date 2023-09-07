@@ -3,6 +3,7 @@
 import logging
 import sys
 import pandas as pd
+import numpy as np
 import scipy as stats
 import statsmodels.api as sm
 from scipy import stats
@@ -28,6 +29,7 @@ class BaseModelLogit:
         self.Y = Y
         self.model_fit = None
         self.summary_results = None
+        self.data_summary = None
         self.cm_df = None
         # logger.info('xx:{}'.format(self.X))
         self.X = self.X.apply(self.__minmaxscale_tranformation,axis=0)
@@ -57,7 +59,24 @@ class BaseModelLogit:
         res = self.model_fit.summary()
         #covert to dataframe
         self.summary_results = pd.DataFrame(res.tables[1].data)
-        return self.summary_results 
+
+
+        data_summary = pd.concat([self.model_fit.pvalues[1:].T.to_frame(),
+                          self.model_fit.params[1:].T.to_frame()],
+                          axis=1
+                          )
+        
+        data_summary.columns = ['Pvalue','Params']
+        data_summary.index.name = 'Features'
+        data_summary.reset_index()
+
+        data_summary['Odds'] = np.exp(data_summary['Params'])
+        data_summary['Percent'] = np.exp(data_summary['Odds'])
+        data_summary.sort_values(by=['Odds'], ascending=False).reset_index(drop=True)
+
+        logger.info('xxx{}'.format(data_summary))
+        
+        return (self.summary_results,data_summary) 
     
     
     def confusion_matrix(self):
