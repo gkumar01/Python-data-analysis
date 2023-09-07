@@ -13,6 +13,7 @@ from collections import  namedtuple
 from utils.data_prep import DataExtractor, ParameterExtractor, CreateOutput_label
 from utils.data_preprocess import DataPreprocess
 from utils.base_plot import BasePlot
+from utils.base_model import BaseModelLogit
 
 __version__ = '1.0.0'
 
@@ -127,6 +128,20 @@ def run_main(args=None):
     BasePlot.corrplot(df[param['PREDICTOR_VARIABLE']],
                       corr_plt_png
                       )
+    #call model
+    mod = BaseModelLogit(X = df[param['PREDICTOR_VARIABLE']],
+              Y = df[param['DEPENDENT_VARIABLE']]
+              )
+    mod_summary = mod.logit_summary()
+    # logger.info('{}'.format(mod_summary))
+
+    #write fit summary
+    fit_summary =  run_info.output_dir.rstrip('/') \
+        +  '/' + output_lable \
+        + run_info.model_type + '_summay.csv'
+    
+    mod_summary.to_csv(fit_summary)
+    
 
     return ret_code
 
