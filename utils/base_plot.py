@@ -16,7 +16,6 @@ class BasePlot:
     """Wrapper class for basic plotting """
     def __init__(self, tbl,outfile) -> None:
         self.tbl = tbl
-        # self.cm = cm
         self.outfile = outfile
         
     # calling the destructor
@@ -41,13 +40,18 @@ class BasePlot:
         return
     
     @classmethod
-    def accuracy_plot(cls,tbl,outfile):
+    def accuracy_plot(cls,tbl,lable,outfile):
         """ """
-        logger.info('{}'.format(tbl))  
+        logger.info('{}'.format(tbl))
         plt.figure()
-        heatmap = sns.heatmap(tbl, annot=True,cmap='BrBG')
-        heatmap.set_title('Accuracy Score: {}'.format('Not defined!!!'),
-                          fontdict={'fontsize':18}, 
+        heatmap = sns.heatmap(tbl, 
+                              annot=True,
+                              cmap='BrBG',
+                              fmt='g', # disable scientific notation
+                              cbar=False # remove side bar
+                              )
+        heatmap.set_title('Accuracy Score: {}%'.format(lable),
+                          fontdict={'fontsize':20}, 
                           pad=12
                           )
         plt.savefig(outfile, dpi=300, bbox_inches='tight')

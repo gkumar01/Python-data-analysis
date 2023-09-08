@@ -151,13 +151,12 @@ def run_main(args=None):
     metric = mod.get_metric()
     logger.info('confusion_metrix:{}'.format(cm_df))
     logger.info('metric:{}'.format(metric))
-    
     # write confusion matrix
     confusion_matrix_fl = run_info.output_dir.rstrip('/') \
         +  '/' + output_lable \
         +  '_' + run_info.model_type + '_confusion_matrix.png'
     
-    BasePlot.accuracy_plot(cm_df, confusion_matrix_fl)
+    BasePlot.accuracy_plot(cm_df,metric['Accuracy'] ,confusion_matrix_fl)
     # cm_df.to_csv(confusion_matrix_fl)
 
     return ret_code
