@@ -44,6 +44,7 @@ class BaseModelLogit:
             'F1_score' : None
         }
         
+
     def __minmaxscale_tranformation(self,lst):
         """ scale variable between 0 to 1. 
         Note: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html
@@ -80,7 +81,7 @@ class BaseModelLogit:
         data_summary['Percent'] = np.exp(data_summary['Odds'])
         data_summary.sort_values(by=['Odds'], ascending=False).reset_index(drop=True)
 
-        # logger.info('xxx{}'.format(data_summary))
+        logger.info('xxx{}'.format(data_summary))
         return (self.summary_results,data_summary)
     
     
@@ -103,6 +104,7 @@ class BaseModelLogit:
             round(2*(self.metric['Precision']*self.metric['Recall'])/ \
                   (self.metric['Precision'] + self.metric['Recall']) \
                   ,4)
+        
         # logger.info('Metric:{}'.format(self.metric))
 
         return self.cm_df
@@ -110,22 +112,6 @@ class BaseModelLogit:
     def get_metric(self):
         return self.metric
 
-class BaseDecisionTree:
-    """
-    Note:Invariant to scaling of input, so you don't 
-    need to do careful feature normalization.Decision trees and
-    ensemble methods do not require feature scaling to be performed
-    as they are not sensative to the variance in the data.
-    # https://csd.cmu.edu/people/faculty/tianqi-chen
-    https://github.com/dmlc/xgboost
-    """
-    def __init__(self) -> None:
-        return     
-
-class BaseLogistGradiantDescentBinaryClassifier:
-    """  """
-    def __init__(self) -> None:
-        return
 
 if __name__ == '__main__':
    logger.info('base_model:{}'.format())
